@@ -175,11 +175,13 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         MenuUsuarios = new javax.swing.JPopupMenu();
-        Eliminar = new javax.swing.JMenuItem();
-        Actualizar = new javax.swing.JMenuItem();
         Promover = new javax.swing.JMenuItem();
         Permisos = new javax.swing.JMenuItem();
+        MenuEmpleados = new javax.swing.JPopupMenu();
+        dar_baja = new javax.swing.JMenuItem();
+        Actualizar = new javax.swing.JMenuItem();
         ActualizarInfoU = new javax.swing.JMenuItem();
+        Asignar_usuario = new javax.swing.JMenuItem();
         MenuInventario = new javax.swing.JPopupMenu();
         ActualizarInfoG = new javax.swing.JMenuItem();
         MenuSolicitudes = new javax.swing.JPopupMenu();
@@ -245,6 +247,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         txtBusquedaUsuario = new javax.swing.JTextField();
         comboFiltroUsuario = new javax.swing.JComboBox<>();
+        comboEmpUsu = new javax.swing.JComboBox<>();
         fondo = new javax.swing.JLabel();
         vehiculos = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -383,22 +386,6 @@ public class Principal extends javax.swing.JFrame {
         Asignar = new javax.swing.JMenuItem();
         Equipos = new javax.swing.JMenuItem();
 
-        Eliminar.setText("Eliminar");
-        Eliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EliminarActionPerformed(evt);
-            }
-        });
-        MenuUsuarios.add(Eliminar);
-
-        Actualizar.setText("Actualizar");
-        Actualizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ActualizarActionPerformed(evt);
-            }
-        });
-        MenuUsuarios.add(Actualizar);
-
         Promover.setText("Promover");
         MenuUsuarios.add(Promover);
 
@@ -410,13 +397,33 @@ public class Principal extends javax.swing.JFrame {
         });
         MenuUsuarios.add(Permisos);
 
+        dar_baja.setText("Eliminar");
+        dar_baja.setActionCommand("Dar de baja");
+        dar_baja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dar_bajaActionPerformed(evt);
+            }
+        });
+        MenuEmpleados.add(dar_baja);
+
+        Actualizar.setText("Actualizar");
+        Actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActualizarActionPerformed(evt);
+            }
+        });
+        MenuEmpleados.add(Actualizar);
+
         ActualizarInfoU.setText("Refrescar tabla");
         ActualizarInfoU.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ActualizarInfoUActionPerformed(evt);
             }
         });
-        MenuUsuarios.add(ActualizarInfoU);
+        MenuEmpleados.add(ActualizarInfoU);
+
+        Asignar_usuario.setText("Asignar usuario");
+        MenuEmpleados.add(Asignar_usuario);
 
         ActualizarInfoG.setText("Refrescar tabla");
         ActualizarInfoG.addActionListener(new java.awt.event.ActionListener() {
@@ -755,7 +762,7 @@ public class Principal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Usuario", "Nombre(s)", "Apellido Paterno", "Apellido Materno", "Cargo", "Área"
+                "ID", "Nombre(s)", "Apellido Paterno", "Apellido Materno", "Telefono"
             }
         ));
         tablaUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -822,6 +829,15 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel5.add(comboFiltroUsuario);
         comboFiltroUsuario.setBounds(150, 100, 210, 28);
+
+        comboEmpUsu.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        comboEmpUsu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboEmpUsuActionPerformed(evt);
+            }
+        });
+        jPanel5.add(comboEmpUsu);
+        comboEmpUsu.setBounds(750, 100, 210, 28);
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondo.png"))); // NOI18N
         jPanel5.add(fondo);
@@ -1897,7 +1913,7 @@ public class Principal extends javax.swing.JFrame {
                         .addGroup(pn_recoleccion_inventario1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lb_objetos_asignados1)
                             .addComponent(jScrollPane34, javax.swing.GroupLayout.PREFERRED_SIZE, 610, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1168, Short.MAX_VALUE)
                         .addGroup(pn_recoleccion_inventario1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lb_objetos_entregados1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane35, javax.swing.GroupLayout.PREFERRED_SIZE, 651, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2138,6 +2154,11 @@ public class Principal extends javax.swing.JFrame {
         comboInventario.addItem("Inventario");
         comboInventario.addItem("Inventario Granel");
         
+        //COMBOEMPUSU
+        comboEmpUsu.setModel(new javax.swing.DefaultComboBoxModel(new String[] {}));
+        comboEmpUsu.addItem("Empleados");
+        comboEmpUsu.addItem("Usuarios");
+        
         //COMBOFILTROUSUARIO
         comboFiltroUsuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] {}));
         comboFiltroUsuario.addItem("Usuario");
@@ -2157,7 +2178,7 @@ public class Principal extends javax.swing.JFrame {
         
         //Llenado de tablas
         if(manager_permisos.consulta_user(Username)){
-            tablaUsuarios.setModel(manager_users.getEmpleados(Username));
+            tablaUsuarios.setModel(manager_users.getEmpleados());
         }
         if(manager_permisos.consulta_vehiculos(Username)){
             tablaVehiculos.setModel(managerVehiculos.getVehiculos());
@@ -2278,87 +2299,6 @@ public class Principal extends javax.swing.JFrame {
         lblArea.setText("Área: "+separador[13]);
     }
     
-    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
-        // TODO add your handling code here:
-        
-        if(manager_permisos.baja_user(Username)){
-            //Obtenemos la fila y con dicha fila obtenemos el usuario
-            int fila = tablaUsuarios.getSelectedRow();
-            usuario = tablaUsuarios.getValueAt(fila, 0).toString();
-            //Creamos un cuadro de dialogo para que confirme la eliminación del usuario o la cancele
-            Object[] botones = {"Confirmar","Cancelar"};
-            int opcion = JOptionPane.showOptionDialog(this,"¿Eliminar al usuario "+usuario+"?", "Confirmación",
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE  , null, botones, botones[0]);
-
-            //Acepta eliminar al usuario
-            if(opcion == 0){
-
-                if(manager_users.eliminarEmpleado(usuario)){
-                    JOptionPane.showMessageDialog(null, "El usuario a sido eliminado exisitosamente.");
-                    tablaUsuarios.setModel(manager_users.getEmpleados(Username));
-                }//if(eliminarEmpleado())
-                else{
-                        JOptionPane.showMessageDialog(null, "Verificar con el distribuidor.");
-                }
-            }//if(opcion == 0)
-        }else{
-            JOptionPane.showMessageDialog(null, "Usted no cuenta con el permiso para eliminar usuarios.");
-        }
-        
-        
-    }//GEN-LAST:event_EliminarActionPerformed
-
-    private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
-        // TODO add your handling code here:
-        /*
-          banderaUser estará siempre en 1 cuando se quiera añadir un empleado o mientras no se use
-          por eso es necesario cambiarlo a dos para saber que la ventana addEmpleados se utilizarára
-          para actualizar.
-        */
-        if(manager_permisos.update_user(Username)){
-        banderaUser = 2;
-        try {
-                for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                    if ("Nimbus".equals(info.getName())) {
-                        UIManager.setLookAndFeel(info.getClassName());
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                // If Nimbus is not available, you can set the GUI to another look and feel.
-            }
-        int fila = tablaUsuarios.getSelectedRow();
-        UserUpdate = tablaUsuarios.getValueAt(fila, 0).toString();
-        System.out.println(UserUpdate);
-            //Llamamos el forumulario para actuaizar un empleado
-            addEmpleados ob = new addEmpleados(this, true);
-            ob.setVisible(true);
-        }else{
-            JOptionPane.showMessageDialog(null, "Usted no cuenta con el permiso para actualizar usuarios.");
-        }
-    }//GEN-LAST:event_ActualizarActionPerformed
-
-    private void PermisosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PermisosActionPerformed
-        // TODO add your handling code here:
-        //Obtenemos el usuario seleccionado
-        int fila = tablaUsuarios.getSelectedRow();
-        usuario = tablaUsuarios.getValueAt(fila, 0).toString();
-        
-        
-        //Llamamos el formulario de los permisos
-        if(manager_permisos.consulta_permisos(Username) || manager_permisos.update_permisos(Username)){
-            if(manager_permisos.update_permisos(Username)){
-                Ventana_permisos ob = new Ventana_permisos(this, true);
-                ob.setVisible(true);
-            }else{
-                Ventana_permisos_consulta ob = new Ventana_permisos_consulta(this, true);
-                ob.setVisible(true);
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "No tiene permisos para visualizar los permisos o actualizarlos");
-        }
-    }//GEN-LAST:event_PermisosActionPerformed
-
     private void menuPermisosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPermisosActionPerformed
         // TODO add your handling code here:
         if((manager_permisos.alta_permisos(Username) && manager_permisos.baja_permisos(Username)) || manager_permisos.consulta_permisos(Username)){
@@ -3566,7 +3506,7 @@ public class Principal extends javax.swing.JFrame {
 
         //Si no hay nada en el campo entonces mostramos todos los empleados
         if(busqueda.equals("")){
-            tablaUsuarios.setModel(manager_users.getEmpleados(Username));
+            tablaUsuarios.setModel(manager_users.getEmpleados());
         }//if
 
         else{
@@ -3578,7 +3518,7 @@ public class Principal extends javax.swing.JFrame {
 
             //Si no hay coincidecnias entonces mostramos todos los empleados
             else{
-                tablaUsuarios.setModel(manager_users.getEmpleados(Username));
+                tablaUsuarios.setModel(manager_users.getEmpleados());
             }//Segundo else
 
         }//Primer else
@@ -3609,13 +3549,24 @@ public class Principal extends javax.swing.JFrame {
 
     private void tablaUsuariosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuariosMouseReleased
         // TODO add your handling code here:
-        //Esto es para seleccionar con el click derecho y desplegar el menu solo cuando se seleccione una fila de la tabla
-        if(SwingUtilities.isRightMouseButton(evt)){
-            int r = tablaUsuarios.rowAtPoint(evt.getPoint());
-            if (r >= 0 && r < tablaUsuarios.getRowCount())
-            tablaUsuarios.setRowSelectionInterval(r, r);
-            MenuUsuarios.show(evt.getComponent(), evt.getX(), evt.getY());//Mostramos el popMenu en la posición donde esta el cursor
-        }//clic derecho
+        if(comboEmpUsu.getSelectedItem().toString().equals("Empleados")){
+            //Esto es para seleccionar con el click derecho y desplegar el menu solo cuando se seleccione una fila de la tabla
+            if(SwingUtilities.isRightMouseButton(evt)){
+                int r = tablaUsuarios.rowAtPoint(evt.getPoint());
+                if (r >= 0 && r < tablaUsuarios.getRowCount())
+                tablaUsuarios.setRowSelectionInterval(r, r);
+                MenuEmpleados.show(evt.getComponent(), evt.getX(), evt.getY());//Mostramos el popMenu en la posición donde esta el cursor
+            }//clic derecho    
+        }else{
+            //Esto es para seleccionar con el click derecho y desplegar el menu solo cuando se seleccione una fila de la tabla
+            if(SwingUtilities.isRightMouseButton(evt)){
+                int r = tablaUsuarios.rowAtPoint(evt.getPoint());
+                if (r >= 0 && r < tablaUsuarios.getRowCount())
+                tablaUsuarios.setRowSelectionInterval(r, r);
+                MenuUsuarios.show(evt.getComponent(), evt.getX(), evt.getY());//Mostramos el popMenu en la posición donde esta el cursor
+            }//clic derecho
+
+        }
 
     }//GEN-LAST:event_tablaUsuariosMouseReleased
 
@@ -3916,15 +3867,6 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ActualizarInfoGActionPerformed
 
-    private void ActualizarInfoUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarInfoUActionPerformed
-        // TODO add your handling code here:
-        if(manager_permisos.consulta_user(Username)){
-            tablaUsuarios.setModel(manager_users.getEmpleados(Username));
-        }else{
-            JOptionPane.showMessageDialog(null, "Te han revocado los permisos para la consulta de empleados");
-        }
-    }//GEN-LAST:event_ActualizarInfoUActionPerformed
-
     private void ActualizarInfoVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarInfoVActionPerformed
         // TODO add your handling code here:
         if(manager_permisos.consulta_vehiculos(Username)){
@@ -4036,6 +3978,109 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         tablaStockMin.setModel(manejador_inventario.getInventarioStockMin());
     }//GEN-LAST:event_ActualizarInfoSMActionPerformed
+
+    private void dar_bajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dar_bajaActionPerformed
+        // TODO add your handling code here:
+
+        if(manager_permisos.baja_user(Username)){
+            //Obtenemos la fila y con dicha fila obtenemos el usuario
+            int fila = tablaUsuarios.getSelectedRow();
+            usuario = tablaUsuarios.getValueAt(fila, 0).toString();
+            //Creamos un cuadro de dialogo para que confirme la eliminación del usuario o la cancele
+            Object[] botones = {"Confirmar","Cancelar"};
+            int opcion = JOptionPane.showOptionDialog(this,"¿Eliminar al usuario "+usuario+"?", "Confirmación",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE  , null, botones, botones[0]);
+
+            //Acepta eliminar al usuario
+            if(opcion == 0){
+
+                if(manager_users.eliminarEmpleado(usuario)){
+                    JOptionPane.showMessageDialog(null, "El usuario a sido eliminado exisitosamente.");
+                    tablaUsuarios.setModel(manager_users.getEmpleados());
+                }//if(eliminarEmpleado())
+                else{
+                    JOptionPane.showMessageDialog(null, "Verificar con el distribuidor.");
+                }
+            }//if(opcion == 0)
+        }else{
+            JOptionPane.showMessageDialog(null, "Usted no cuenta con el permiso para eliminar usuarios.");
+        }
+
+    }//GEN-LAST:event_dar_bajaActionPerformed
+
+    private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
+        // TODO add your handling code here:
+        /*
+        banderaUser estará siempre en 1 cuando se quiera añadir un empleado o mientras no se use
+        por eso es necesario cambiarlo a dos para saber que la ventana addEmpleados se utilizarára
+        para actualizar.
+        */
+        if(manager_permisos.update_user(Username)){
+            banderaUser = 2;
+            try {
+                for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                // If Nimbus is not available, you can set the GUI to another look and feel.
+            }
+            int fila = tablaUsuarios.getSelectedRow();
+            UserUpdate = tablaUsuarios.getValueAt(fila, 0).toString();
+            System.out.println(UserUpdate);
+            //Llamamos el forumulario para actuaizar un empleado
+            addEmpleados ob = new addEmpleados(this, true);
+            ob.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null, "Usted no cuenta con el permiso para actualizar usuarios.");
+        }
+    }//GEN-LAST:event_ActualizarActionPerformed
+
+    private void ActualizarInfoUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarInfoUActionPerformed
+        // TODO add your handling code here:
+        if(manager_permisos.consulta_user(Username)){
+            tablaUsuarios.setModel(manager_users.getEmpleados());
+        }else{
+            JOptionPane.showMessageDialog(null, "Te han revocado los permisos para la consulta de empleados");
+        }
+    }//GEN-LAST:event_ActualizarInfoUActionPerformed
+
+    private void PermisosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PermisosActionPerformed
+        // TODO add your handling code here:
+        //Obtenemos el usuario seleccionado
+        int fila = tablaUsuarios.getSelectedRow();
+        usuario = tablaUsuarios.getValueAt(fila, 0).toString();
+
+        //Llamamos el formulario de los permisos
+        if(manager_permisos.consulta_permisos(Username) || manager_permisos.update_permisos(Username)){
+            if(manager_permisos.update_permisos(Username)){
+                Ventana_permisos ob = new Ventana_permisos(this, true);
+                ob.setVisible(true);
+            }else{
+                Ventana_permisos_consulta ob = new Ventana_permisos_consulta(this, true);
+                ob.setVisible(true);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "No tiene permisos para visualizar los permisos o actualizarlos");
+        }
+    }//GEN-LAST:event_PermisosActionPerformed
+
+    private void comboEmpUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboEmpUsuActionPerformed
+        // TODO add your handling code here:
+        if(manager_permisos.consulta_user(Username)){
+
+            if(comboEmpUsu.getSelectedItem().toString().equals("Empleados")){
+                tablaUsuarios.setModel(manager_users.getEmpleados());
+            }else{
+                tablaUsuarios.setModel(manager_users.getUsuarios(Username));
+            }
+
+        }else{
+            JOptionPane.showMessageDialog(null, "No tiene permisos para consultar empleados/usuarios.");
+        }
+    }//GEN-LAST:event_comboEmpUsuActionPerformed
        
     public void cargarImagen(String matricula) throws IOException, SQLException {
         
@@ -4180,12 +4225,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem AgregarStock;
     private javax.swing.JMenuItem Asignar;
     private javax.swing.JMenuItem AsignarV;
+    private javax.swing.JMenuItem Asignar_usuario;
     private javax.swing.JMenuItem Atender;
     private javax.swing.JMenuItem Autorizar;
     private javax.swing.JMenuItem CancelarA;
     private javax.swing.JMenuItem CancelarEntrega;
     private javax.swing.JMenuItem Denegar;
-    private javax.swing.JMenuItem Eliminar;
     private javax.swing.JMenuItem EntregarParte;
     private javax.swing.JMenuItem EntregarTodo;
     private javax.swing.JMenuItem Equipos;
@@ -4194,6 +4239,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu MenuAsginados;
     private javax.swing.JPopupMenu MenuAsignacionP;
     private javax.swing.JPopupMenu MenuAsignacionPG;
+    private javax.swing.JPopupMenu MenuEmpleados;
     private javax.swing.JPopupMenu MenuEntregados;
     private javax.swing.JPopupMenu MenuInventario;
     private javax.swing.JPopupMenu MenuPendientes;
@@ -4230,6 +4276,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JSpinner campoip2;
     private javax.swing.JSpinner campoip3;
     private javax.swing.JSpinner campoip4;
+    private javax.swing.JComboBox<String> comboEmpUsu;
     private javax.swing.JComboBox<String> comboEmpleado;
     private javax.swing.JComboBox<String> comboEmpleadoR;
     public static javax.swing.JComboBox<String> comboFiltro;
@@ -4237,6 +4284,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboFiltroVehiculos;
     private javax.swing.JComboBox<String> comboInventario;
     private javax.swing.JPanel configuracion;
+    private javax.swing.JMenuItem dar_baja;
     private javax.swing.JPanel empleado;
     private javax.swing.JLabel etiquetaAño;
     private javax.swing.JLabel etiquetaEstado;
